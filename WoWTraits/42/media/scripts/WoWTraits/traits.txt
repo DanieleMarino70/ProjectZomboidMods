@@ -1,0 +1,120 @@
+module WoWTraits
+{
+    /* =====================================================================
+       WOW TRAITS MOD - Build 42.15
+       14 tratti ispirati a World of Warcraft
+       ===================================================================== */
+
+    /* --- WARRIOR --- */
+    character_trait_definition WoWTraits:trait_Berserker
+    {
+        Cost = -4,
+        UIName = UI_trait_Berserker,
+        UIDescription = UI_trait_BerserkerDesc,
+        XPBoosts = Axe=2;Blunt=2;SmallBlade=2;LongBlade=2;Spear=2,
+    }
+
+    character_trait_definition WoWTraits:trait_SecondWind
+    {
+        Cost = -3,
+        UIName = UI_trait_SecondWind,
+        UIDescription = UI_trait_SecondWindDesc,
+    }
+
+    character_trait_definition WoWTraits:trait_ShieldWall
+    {
+        Cost = -3,
+        UIName = UI_trait_ShieldWall,
+        UIDescription = UI_trait_ShieldWallDesc,
+    }
+
+    character_trait_definition WoWTraits:trait_Whirlwind
+    {
+        Cost = -3,
+        UIName = UI_trait_Whirlwind,
+        UIDescription = UI_trait_WhirlwindDesc,
+        XPBoosts = Axe=1;Blunt=1;LongBlade=1,
+    }
+
+    /* --- ROGUE --- */
+    character_trait_definition WoWTraits:trait_SliceAndDice
+    {
+        Cost = -3,
+        UIName = UI_trait_SliceAndDice,
+        UIDescription = UI_trait_SliceAndDiceDesc,
+        XPBoosts = SmallBlade=3;LongBlade=2;Nimble=2,
+    }
+
+    /* --- MAGE --- */
+    character_trait_definition WoWTraits:trait_FrostNova
+    {
+        Cost = -3,
+        UIName = UI_trait_FrostNova,
+        UIDescription = UI_trait_FrostNovaDesc,
+    }
+
+    character_trait_definition WoWTraits:trait_ArcaneIntellect
+    {
+        Cost = -4,
+        UIName = UI_trait_ArcaneIntellect,
+        UIDescription = UI_trait_ArcaneIntellectDesc,
+        XPBoosts = Axe=2;Blunt=2;SmallBlade=2;LongBlade=2;Spear=2;Sprinting=2;Nimble=2;Sneaking=2;Aiming=2;Reloading=2;Carpentry=2;Cooking=2;Farming=2;Doctor=2;Electricity=2;MetalWelding=2;Mechanics=2;Tailoring=2;Fishing=2;Trapping=2,
+    }
+
+    character_trait_definition WoWTraits:trait_Immolation
+    {
+        Cost = -3,
+        UIName = UI_trait_Immolation,
+        UIDescription = UI_trait_ImmolationDesc,
+    }
+
+    /* --- DEATH KNIGHT --- */
+    character_trait_definition WoWTraits:trait_DeathCoil
+    {
+        Cost = -4,
+        UIName = UI_trait_DeathCoil,
+        UIDescription = UI_trait_DeathCoilDesc,
+    }
+
+    character_trait_definition WoWTraits:trait_BoneShield
+    {
+        Cost = -4,
+        UIName = UI_trait_BoneShield,
+        UIDescription = UI_trait_BoneShieldDesc,
+    }
+
+    /* --- HUNTER / ROGUE --- */
+    character_trait_definition WoWTraits:trait_DetectTraps
+    {
+        Cost = -2,
+        UIName = UI_trait_DetectTraps,
+        UIDescription = UI_trait_DetectTrapsDesc,
+        XPBoosts = Sneaking=3;Trapping=3,
+    }
+
+    character_trait_definition WoWTraits:trait_EagleEye
+    {
+        Cost = -2,
+        UIName = UI_trait_EagleEye,
+        UIDescription = UI_trait_EagleEyeDesc,
+        XPBoosts = Aiming=4;Reloading=2,
+    }
+
+    /* --- DRUID --- */
+    character_trait_definition WoWTraits:trait_FeralCharge
+    {
+        Cost = -3,
+        UIName = UI_trait_FeralCharge,
+        UIDescription = UI_trait_FeralChargeDesc,
+        XPBoosts = Sprinting=3;Nimble=2,
+    }
+
+    /* --- GOBLIN ENGINEER --- */
+    character_trait_definition WoWTraits:trait_Engineer
+    {
+        Cost = -3,
+        UIName = UI_trait_Engineer,
+        UIDescription = UI_trait_EngineerDesc,
+        XPBoosts = Carpentry=3;Electricity=3;MetalWelding=3;Mechanics=4,
+    }
+}
