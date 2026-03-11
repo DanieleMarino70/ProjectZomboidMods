@@ -1,0 +1,4 @@
+VERSION = 1,
+
+UI_trait_SurvivalInstinct = Istinto di Sopravvivenza,
+UI_trait_SurvivalInstinctDesc = La paura affina i riflessi. Piu' sei in preda al panico o allo stress, piu' velocemente impari le abilita' di combattimento. Bonus XP massimo a pieno panico.,
