@@ -1,5 +1,5 @@
 -- ============================================================
---  Istinto di Sopravvivenza — Mod per Project Zomboid B42.15
+--  Istinto di Sopravvivenza — Mod per Project Zomboid B42.19.0
 --  Autore: (Danielao)
 --  Versione: 1.0.0
 --

@@ -1,4 +1,4 @@
-# Istinto di Sopravvivenza — Mod per Project Zomboid B42.15
+# Istinto di Sopravvivenza — Mod per Project Zomboid B42.19.0
 
 ## Descrizione
 Aggiunge il tratto positivo **Istinto di Sopravvivenza** (-4 punti).
