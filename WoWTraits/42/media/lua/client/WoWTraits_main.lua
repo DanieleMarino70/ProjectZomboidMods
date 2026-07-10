@@ -121,6 +121,24 @@ local function getPlayerState(player)
     return state
 end
 
+local function refreshRunSpeed(player, state, stats, now)
+    local multiplier = 1.0
+    if player:HasTrait("trait_Berserker") and state.berserkerActive then
+        multiplier = multiplier + CFG.BERSERKER_SPEED_BONUS
+    end
+    if player:HasTrait("trait_FrostNova") and state.fnActive then
+        multiplier = multiplier + CFG.FROSTNOVA_SPEED_BONUS
+    end
+    if player:HasTrait("trait_FeralCharge") and state.fcActive then
+        multiplier = multiplier + CFG.FERALCHARGE_SPEED_BONUS
+    end
+    if player:HasTrait("trait_SliceAndDice")
+            and now - state.sdLastHitTime <= CFG.SLICEANDDICE_WINDOW then
+        multiplier = multiplier + state.sdStacks * CFG.SLICEANDDICE_SPEED_BONUS
+    end
+    stats:setRunSpeed(state.baseRunSpeed * multiplier)
+end
+
 -- =============================================================================
 -- STATO EFFETTI TEMPORANEI SUGLI ZOMBIE (rallentamento/spinta)
 -- Necessario per ripristinare la velocità originale dopo Immolation/Whirlwind,
@@ -350,11 +368,9 @@ local function WoWTraits_OnPlayerUpdate(player)
             if not state.berserkerActive then
                 state.berserkerActive = true
             end
-            stats:setRunSpeed(state.baseRunSpeed * (1.0 + CFG.BERSERKER_SPEED_BONUS))
         else
             if state.berserkerActive then
                 state.berserkerActive = false
-                stats:setRunSpeed(state.baseRunSpeed)
             end
         end
     end
@@ -381,7 +397,6 @@ local function WoWTraits_OnPlayerUpdate(player)
         if state.fnActive then
             if now >= state.fnEndTime then
                 state.fnActive = false
-                stats:setRunSpeed(state.baseRunSpeed)
             end
         else
             -- Verifica cooldown e trigger
@@ -426,7 +441,6 @@ local function WoWTraits_OnPlayerUpdate(player)
         if state.fcActive then
             if now >= state.fcEndTime then
                 state.fcActive = false
-                stats:setRunSpeed(state.baseRunSpeed)
             end
         end
     end
@@ -434,8 +448,9 @@ local function WoWTraits_OnPlayerUpdate(player)
     if not player:HasTrait("trait_SliceAndDice")
             or now - state.sdLastHitTime > CFG.SLICEANDDICE_WINDOW then
         state.sdStacks = 0
-        stats:setRunSpeed(state.baseRunSpeed)
     end
+
+    refreshRunSpeed(player, state, stats, now)
 
     -- -------------------------------------------------------------------------
     -- DETECT TRAPS: visione estesa
@@ -494,10 +509,12 @@ local function WoWTraits_OnHitCharacter(attacker, target, handWeapon, damage)
             state.sdStacks = 1
         end
         state.sdLastHitTime = now
-        local bonus = state.sdStacks * CFG.SLICEANDDICE_SPEED_BONUS
         local stats = attacker:getStats()
         if stats then
-            stats:setRunSpeed(math.min(1.0 + bonus, 1.0 + CFG.SLICEANDDICE_MAX_STACKS * CFG.SLICEANDDICE_SPEED_BONUS))
+            if state.baseRunSpeed == nil then
+                state.baseRunSpeed = stats:getRunSpeed()
+            end
+            refreshRunSpeed(attacker, state, stats, now)
         end
     end
 end
