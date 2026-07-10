@@ -270,6 +270,15 @@ local function isHoldingShield(player)
     return isShieldItem(primaryHand) or isShieldItem(secondaryHand)
 end
 
+-- Logga (una sola volta per player) l'avviso di API di visione mancante,
+-- condiviso tra Detect Traps ed Eagle Eye per evitare messaggi duplicati.
+local function warnMissingVisionApi(state)
+    if not state.visionApiWarned then
+        state.visionApiWarned = true
+        print("[WoWTraits] Attenzione: getVisionRadius/setVisionRadius non disponibili in questa build. Detect Traps/Eagle Eye non applicheranno il bonus di visione.")
+    end
+end
+
 -- =============================================================================
 -- ON PLAYER UPDATE — logica principale tick per tick
 -- =============================================================================
@@ -418,7 +427,7 @@ local function WoWTraits_OnPlayerUpdate(player)
     -- DETECT TRAPS: visione estesa
     -- NOTA: getVisionRadius/setVisionRadius non sono API core documentate di
     -- IsoPlayer in B42; sono protette e, se assenti, viene loggato un avviso
-    -- una sola volta invece di fallire silenziosamente.
+    -- una sola volta (per player) invece di fallire silenziosamente.
     -- -------------------------------------------------------------------------
     if player:HasTrait("trait_DetectTraps") then
         if player.getVisionRadius and player.setVisionRadius then
@@ -426,9 +435,8 @@ local function WoWTraits_OnPlayerUpdate(player)
             if vis < 10 + CFG.DETECTTRAPS_VISION_BONUS then
                 player:setVisionRadius(10 + CFG.DETECTTRAPS_VISION_BONUS)
             end
-        elseif not state.visionApiWarned then
-            state.visionApiWarned = true
-            print("[WoWTraits] Attenzione: getVisionRadius/setVisionRadius non disponibili in questa build. Detect Traps non applichera' il bonus di visione.")
+        else
+            warnMissingVisionApi(state)
         end
     end
 
@@ -441,9 +449,8 @@ local function WoWTraits_OnPlayerUpdate(player)
             if vis < 10 + CFG.EAGLEEYE_VISION_BONUS then
                 player:setVisionRadius(10 + CFG.EAGLEEYE_VISION_BONUS)
             end
-        elseif not state.visionApiWarned then
-            state.visionApiWarned = true
-            print("[WoWTraits] Attenzione: getVisionRadius/setVisionRadius non disponibili in questa build. Eagle Eye non applichera' il bonus di visione.")
+        else
+            warnMissingVisionApi(state)
         end
     end
 
