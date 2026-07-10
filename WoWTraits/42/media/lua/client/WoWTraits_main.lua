@@ -65,6 +65,10 @@ local CFG = {
 
     -- Engineer
     ENGINEER_SPEED_BONUS      = 0.15,   -- +15% velocità durante lavoro
+
+    -- Generico
+    ZOMBIE_DEFAULT_WALK_SPEED = 0.8,    -- velocità base di uno zombie
+    MAX_DAMAGE_REDUCTION      = 0.75,   -- cap riduzione danni combinata (Shield Wall + Bone Shield)
 }
 
 -- =============================================================================
@@ -140,7 +144,7 @@ end
 
 local function applyTemporaryZombieSpeed(zombie, speed, durationMs, now)
     local existing = ZombieSpeedEffects[zombie]
-    local originalSpeed = existing and existing.originalSpeed or 0.8
+    local originalSpeed = existing and existing.originalSpeed or CFG.ZOMBIE_DEFAULT_WALK_SPEED
     if zombie:getStats() then
         zombie:getStats():setWalkSpeed(speed)
     end
@@ -226,8 +230,7 @@ local function slowNearbyZombies(player, radius, slowFactor, now)
             local dx = z:getX() - px
             local dy = z:getY() - py
             if math.sqrt(dx*dx + dy*dy) <= radius then
-                local baseSpeed = 0.8
-                local targetSpeed = baseSpeed * (1.0 - slowFactor)
+                local targetSpeed = CFG.ZOMBIE_DEFAULT_WALK_SPEED * (1.0 - slowFactor)
                 applyTemporaryZombieSpeed(z, targetSpeed, ZOMBIE_SLOW_REFRESH_MS, now)
             end
         end
@@ -303,7 +306,7 @@ local function WoWTraits_OnPlayerUpdate(player)
             reduction = reduction + CFG.BONE_SHIELD_REDUCTION
         end
         if reduction > 0 then
-            reduction = math.min(reduction, 0.75) -- cap a 75% riduzione totale
+            reduction = math.min(reduction, CFG.MAX_DAMAGE_REDUCTION)
             local refund = damageTaken * reduction
             curHP = math.min(curHP + refund, maxHP)
             bodyDamage:setOverallBodyHealth(curHP)
