@@ -144,7 +144,7 @@ end
 
 local function applyTemporaryZombieSpeed(zombie, speed, durationMs, now)
     local existing = ZombieSpeedEffects[zombie]
-    local originalSpeed = existing and existing.originalSpeed or CFG.ZOMBIE_DEFAULT_WALK_SPEED
+    local originalSpeed = (existing and existing.originalSpeed) or CFG.ZOMBIE_DEFAULT_WALK_SPEED
     if zombie:getStats() then
         zombie:getStats():setWalkSpeed(speed)
     end
