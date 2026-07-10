@@ -1,5 +1,5 @@
 -- ============================================================
---  Istinto di Sopravvivenza — Mod per Project Zomboid B42.15
+--  Istinto di Sopravvivenza — Mod per Project Zomboid B42.19.0
 --  Autore: (Danielao)
 --  Versione: 1.0.0
 --
@@ -15,7 +15,7 @@ IstintoDiSopravvivenza = {}
 -- -------------------------------------------------------
 local TRAIT_ID       = "trait_SurvivalInstinct"
 local XP_BONUS_MIN   = 1.0   -- moltiplicatore base (nessun bonus)
-local XP_BONUS_MAX   = 3.0   -- moltiplicatore massimo (panico pieno)
+local XP_BONUS_MAX   = 2.5   -- moltiplicatore massimo (panico pieno)
 local PANIC_FULL     = 100   -- valore massimo del panico nel gioco
 
 -- Skill di combattimento che ricevono il bonus
@@ -39,9 +39,11 @@ local lastMultiplier = {}   -- [playerIndex] = currentMultiplier
 -- -------------------------------------------------------
 local function calcMultiplier(panicLevel, stressLevel)
     -- Combina panico (peso 70%) e stress (peso 30%)
-    local combined = (panicLevel / PANIC_FULL) * 0.7 + stressLevel * 0.3
+    local panicRatio = math.max(0, math.min(panicLevel / PANIC_FULL, 1))
+    local clampedStress = math.max(0, math.min(stressLevel, 1))
+    local combined = panicRatio * 0.7 + clampedStress * 0.3
     -- Interpolazione lineare tra MIN e MAX
-    return XP_BONUS_MIN + combined * (XP_BONUS_MAX - XP_BONUS_MIN)
+    return math.min(XP_BONUS_MAX, XP_BONUS_MIN + combined * (XP_BONUS_MAX - XP_BONUS_MIN))
 end
 
 -- -------------------------------------------------------

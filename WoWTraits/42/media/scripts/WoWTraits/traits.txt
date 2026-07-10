@@ -1,7 +1,7 @@
 module WoWTraits
 {
     /* =====================================================================
-       WOW TRAITS MOD - Build 42.15
+       WOW TRAITS MOD - Build 42.19.0
        14 tratti ispirati a World of Warcraft
        ===================================================================== */
 

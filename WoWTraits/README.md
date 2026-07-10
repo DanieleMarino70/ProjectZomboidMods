@@ -1,5 +1,5 @@
 # WoW Traits — Project Zomboid Mod
-**Build 42.15 Compatible**
+**Build 42.19.0 Compatible**
 
 Aggiunge 14 tratti ispirati alle classi e abilità di World of Warcraft.
 
@@ -66,7 +66,7 @@ WoWTraits/
 
 ## 🔧 Compatibilità e Note Tecniche
 
-- Testato su Build **42.15**
+- Testato su Build **42.19.0**
 - Compatibile con la maggior parte degli altri mod di tratti
 - I tratti con XPBoosts multipli (es. Arcane Intellect) si basano sul sistema nativo di Build 42
 - La logica Lua si aggancia a: `OnGameBoot`, `OnPlayerUpdate`, `OnHitCharacter`, `OnZombieDead`, `OnKeyPressed`
