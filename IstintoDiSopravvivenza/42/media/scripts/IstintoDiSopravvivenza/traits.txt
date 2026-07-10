@@ -1,8 +1,20 @@
 module IstintoDiSopravvivenza
 {
-    character_trait_definition IstintoDiSopravvivenza:trait_SurvivalInstinct
+    /* =====================================================================
+       ISTINTO DI SOPRAVVIVENZA - Build 42.19.0
+
+       NOTA: la definizione DEVE referenziare il CharacterTrait registrato
+       in media/registries.lua (campo "CharacterTrait = ...").
+       Convenzione costi (come vanilla character_traits.txt):
+       Cost positivo = il tratto costa punti (tratto positivo).
+       ===================================================================== */
+
+    character_trait_definition istintodisopravvivenza:trait_survivalinstinct
     {
-        Cost = -4,
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = istintodisopravvivenza:trait_survivalinstinct,
+        Cost = 4,
         UIName = UI_trait_SurvivalInstinct,
         UIDescription = UI_trait_SurvivalInstinctDesc,
         XPBoosts = Axe=1;Blunt=1;SmallBlade=1;LongBlade=1;Spear=1,

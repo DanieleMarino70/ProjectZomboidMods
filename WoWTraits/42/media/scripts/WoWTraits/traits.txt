@@ -3,118 +3,165 @@ module WoWTraits
     /* =====================================================================
        WOW TRAITS MOD - Build 42.19.0
        14 tratti ispirati a World of Warcraft
+
+       NOTA: ogni definizione DEVE referenziare un CharacterTrait registrato
+       in media/registries.lua (campo "CharacterTrait = wowtraits:...").
+       Convenzione costi (come vanilla character_traits.txt):
+       Cost positivo = il tratto costa punti (tratto positivo).
        ===================================================================== */
 
     /* --- WARRIOR --- */
-    character_trait_definition WoWTraits:trait_Berserker
+    character_trait_definition wowtraits:trait_berserker
     {
-        Cost = -4,
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = wowtraits:trait_berserker,
+        Cost = 4,
         UIName = UI_trait_Berserker,
         UIDescription = UI_trait_BerserkerDesc,
         XPBoosts = Axe=2;Blunt=2;SmallBlade=2;LongBlade=2;Spear=2,
     }
 
-    character_trait_definition WoWTraits:trait_SecondWind
+    character_trait_definition wowtraits:trait_secondwind
     {
-        Cost = -3,
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = wowtraits:trait_secondwind,
+        Cost = 3,
         UIName = UI_trait_SecondWind,
         UIDescription = UI_trait_SecondWindDesc,
     }
 
-    character_trait_definition WoWTraits:trait_ShieldWall
+    character_trait_definition wowtraits:trait_shieldwall
     {
-        Cost = -3,
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = wowtraits:trait_shieldwall,
+        Cost = 3,
         UIName = UI_trait_ShieldWall,
         UIDescription = UI_trait_ShieldWallDesc,
     }
 
-    character_trait_definition WoWTraits:trait_Whirlwind
+    character_trait_definition wowtraits:trait_whirlwind
     {
-        Cost = -3,
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = wowtraits:trait_whirlwind,
+        Cost = 3,
         UIName = UI_trait_Whirlwind,
         UIDescription = UI_trait_WhirlwindDesc,
         XPBoosts = Axe=1;Blunt=1;LongBlade=1,
     }
 
     /* --- ROGUE --- */
-    character_trait_definition WoWTraits:trait_SliceAndDice
+    character_trait_definition wowtraits:trait_sliceanddice
     {
-        Cost = -3,
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = wowtraits:trait_sliceanddice,
+        Cost = 3,
         UIName = UI_trait_SliceAndDice,
         UIDescription = UI_trait_SliceAndDiceDesc,
         XPBoosts = SmallBlade=3;LongBlade=2;Nimble=2,
     }
 
     /* --- MAGE --- */
-    character_trait_definition WoWTraits:trait_FrostNova
+    character_trait_definition wowtraits:trait_frostnova
     {
-        Cost = -3,
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = wowtraits:trait_frostnova,
+        Cost = 3,
         UIName = UI_trait_FrostNova,
         UIDescription = UI_trait_FrostNovaDesc,
     }
 
-    character_trait_definition WoWTraits:trait_ArcaneIntellect
+    character_trait_definition wowtraits:trait_arcaneintellect
     {
-        Cost = -4,
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = wowtraits:trait_arcaneintellect,
+        Cost = 6,
         UIName = UI_trait_ArcaneIntellect,
         UIDescription = UI_trait_ArcaneIntellectDesc,
-        XPBoosts = Axe=2;Blunt=2;SmallBlade=2;LongBlade=2;Spear=2;Sprinting=2;Nimble=2;Sneaking=2;Aiming=2;Reloading=2;Carpentry=2;Cooking=2;Farming=2;Doctor=2;Electricity=2;MetalWelding=2;Mechanics=2;Tailoring=2;Fishing=2;Trapping=2,
+        XPBoosts = Axe=2;Blunt=2;SmallBlade=2;LongBlade=2;Spear=2;Sprinting=2;Nimble=2;Sneak=2;Aiming=2;Reloading=2;Woodwork=2;Cooking=2;Farming=2;Doctor=2;Electricity=2;MetalWelding=2;Mechanics=2;Tailoring=2;Fishing=2;Trapping=2,
     }
 
-    character_trait_definition WoWTraits:trait_Immolation
+    character_trait_definition wowtraits:trait_immolation
     {
-        Cost = -3,
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = wowtraits:trait_immolation,
+        Cost = 3,
         UIName = UI_trait_Immolation,
         UIDescription = UI_trait_ImmolationDesc,
     }
 
     /* --- DEATH KNIGHT --- */
-    character_trait_definition WoWTraits:trait_DeathCoil
+    character_trait_definition wowtraits:trait_deathcoil
     {
-        Cost = -4,
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = wowtraits:trait_deathcoil,
+        Cost = 4,
         UIName = UI_trait_DeathCoil,
         UIDescription = UI_trait_DeathCoilDesc,
     }
 
-    character_trait_definition WoWTraits:trait_BoneShield
+    character_trait_definition wowtraits:trait_boneshield
     {
-        Cost = -4,
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = wowtraits:trait_boneshield,
+        Cost = 4,
         UIName = UI_trait_BoneShield,
         UIDescription = UI_trait_BoneShieldDesc,
     }
 
     /* --- HUNTER / ROGUE --- */
-    character_trait_definition WoWTraits:trait_DetectTraps
+    character_trait_definition wowtraits:trait_detecttraps
     {
-        Cost = -2,
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = wowtraits:trait_detecttraps,
+        Cost = 2,
         UIName = UI_trait_DetectTraps,
         UIDescription = UI_trait_DetectTrapsDesc,
-        XPBoosts = Sneaking=3;Trapping=3,
+        XPBoosts = Sneak=3;Trapping=3,
     }
 
-    character_trait_definition WoWTraits:trait_EagleEye
+    character_trait_definition wowtraits:trait_eagleeye
     {
-        Cost = -2,
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = wowtraits:trait_eagleeye,
+        Cost = 2,
         UIName = UI_trait_EagleEye,
         UIDescription = UI_trait_EagleEyeDesc,
         XPBoosts = Aiming=4;Reloading=2,
     }
 
     /* --- DRUID --- */
-    character_trait_definition WoWTraits:trait_FeralCharge
+    character_trait_definition wowtraits:trait_feralcharge
     {
-        Cost = -3,
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = wowtraits:trait_feralcharge,
+        Cost = 3,
         UIName = UI_trait_FeralCharge,
         UIDescription = UI_trait_FeralChargeDesc,
         XPBoosts = Sprinting=3;Nimble=2,
     }
 
     /* --- GOBLIN ENGINEER --- */
-    character_trait_definition WoWTraits:trait_Engineer
+    character_trait_definition wowtraits:trait_engineer
     {
-        Cost = -3,
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = wowtraits:trait_engineer,
+        Cost = 3,
         UIName = UI_trait_Engineer,
         UIDescription = UI_trait_EngineerDesc,
-        XPBoosts = Carpentry=3;Electricity=3;MetalWelding=3;Mechanics=4,
+        XPBoosts = Woodwork=3;Electricity=3;MetalWelding=3;Mechanics=4,
     }
 }

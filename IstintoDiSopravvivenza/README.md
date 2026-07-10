@@ -1,7 +1,7 @@
 # Istinto di Sopravvivenza — Mod per Project Zomboid B42.19.0
 
 ## Descrizione
-Aggiunge il tratto positivo **Istinto di Sopravvivenza** (-4 punti).
+Aggiunge il tratto positivo **Istinto di Sopravvivenza** (costa 4 punti).
 
 > "La paura affina i riflessi. Più sei in preda al panico o allo stress,
 >  più velocemente impari le abilità di combattimento."
@@ -34,17 +34,27 @@ IstintoDiSopravvivenza/
 ├── 42/
 │   ├── mod.info
 │   └── media/
+│       ├── registries.lua              ← Registra il CharacterTrait nel registro B42
 │       ├── scripts/
 │       │   └── IstintoDiSopravvivenza/
-│       │       └── traits.txt          ← Definizione del tratto
+│       │       └── traits.txt          ← Definizione character_trait_definition
 │       └── lua/
-│           └── client/
-│               ├── SurvivalInstinct.lua  ← Logica XP dinamica
-│               └── UI/Translate/
-│                   ├── UI_EN.txt         ← Testi in inglese
-│                   └── UI_IT.txt         ← Testi in italiano
+│           ├── client/
+│           │   └── SurvivalInstinct.lua  ← Logica XP dinamica
+│           └── shared/Translate/
+│               ├── EN/UI.json            ← Testi in inglese (formato JSON B42)
+│               └── IT/UI.json            ← Testi in italiano
 └── common/                               ← Richiesta da B42 (vuota)
 ```
+
+### Note tecniche Build 42.19
+- Il tratto va **registrato** in `media/registries.lua` con
+  `CharacterTrait.register("istintodisopravvivenza:...")` e poi definito negli
+  script con `character_trait_definition` + campo `CharacterTrait = ...`.
+- API Lua B42: `player:hasTrait(CharacterTrait)` (non più stringhe),
+  panico da `getMoodles():getMoodleLevel(MoodleType.PANIC)` (0-4),
+  stress da `stats:get(CharacterStat.STRESS)` (0.0-1.0),
+  bonus XP con `getXp():addXpMultiplier(perk, mult, minLevel, maxLevel)`.
 
 ---
 
