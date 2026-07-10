@@ -114,6 +114,7 @@ local function getPlayerState(player)
             -- Ultimo HP osservato, usato per calcolare i danni subiti nel tick
             -- e applicare la riduzione danni di Shield Wall / Bone Shield.
             lastHealth       = nil,
+            baseRunSpeed     = nil,
         }
         PlayerState[idx] = state
     end
@@ -292,8 +293,17 @@ local function WoWTraits_OnPlayerUpdate(player)
     if not stats or not bodyDamage then return end
 
     local state = getPlayerState(player)
+    if state.baseRunSpeed == nil then
+        state.baseRunSpeed = stats:getRunSpeed()
+    end
     local maxHP = player.getMaxHealth and player:getMaxHealth() or 100
     local curHP = bodyDamage:getOverallBodyHealth()
+
+    if player:HasTrait("trait_ShieldWall") then
+        state.shieldWallActive = isHoldingShield(player)
+    else
+        state.shieldWallActive = false
+    end
 
     -- -------------------------------------------------------------------------
     -- SHIELD WALL / BONE SHIELD: applica la riduzione danni effettiva.
@@ -333,14 +343,11 @@ local function WoWTraits_OnPlayerUpdate(player)
             if not state.berserkerActive then
                 state.berserkerActive = true
             end
-            local baseSpeed = stats:getRunSpeed()
-            if baseSpeed < 1.0 + CFG.BERSERKER_SPEED_BONUS then
-                stats:setRunSpeed(math.min(baseSpeed + 0.01, 1.0 + CFG.BERSERKER_SPEED_BONUS))
-            end
+            stats:setRunSpeed(state.baseRunSpeed * (1.0 + CFG.BERSERKER_SPEED_BONUS))
         else
             if state.berserkerActive then
                 state.berserkerActive = false
-                stats:setRunSpeed(1.0)
+                stats:setRunSpeed(state.baseRunSpeed)
             end
         end
     end
@@ -359,12 +366,6 @@ local function WoWTraits_OnPlayerUpdate(player)
     end
 
     -- -------------------------------------------------------------------------
-    -- SHIELD WALL: tiene scudo → abilita la riduzione danni sopra
-    -- -------------------------------------------------------------------------
-    if player:HasTrait("trait_ShieldWall") then
-        state.shieldWallActive = isHoldingShield(player)
-    end
-
     -- -------------------------------------------------------------------------
     -- FROST NOVA: 4+ zombie vicini → burst di velocità
     -- -------------------------------------------------------------------------
@@ -373,7 +374,7 @@ local function WoWTraits_OnPlayerUpdate(player)
         if state.fnActive then
             if now >= state.fnEndTime then
                 state.fnActive = false
-                stats:setRunSpeed(1.0)
+                stats:setRunSpeed(state.baseRunSpeed)
             end
         else
             -- Verifica cooldown e trigger
@@ -418,9 +419,15 @@ local function WoWTraits_OnPlayerUpdate(player)
         if state.fcActive then
             if now >= state.fcEndTime then
                 state.fcActive = false
-                stats:setRunSpeed(1.0)
+                stats:setRunSpeed(state.baseRunSpeed)
             end
         end
+    end
+
+    if not player:HasTrait("trait_SliceAndDice")
+            or now - state.sdLastHitTime > CFG.SLICEANDDICE_WINDOW then
+        state.sdStacks = 0
+        stats:setRunSpeed(state.baseRunSpeed)
     end
 
     -- -------------------------------------------------------------------------
@@ -492,43 +499,42 @@ end
 -- ON ZOMBIE DEAD — effetti alla morte di uno zombie
 -- =============================================================================
 local function WoWTraits_OnZombieDead(zombie)
+    if not zombie or zombie:isDead() then return end
     local players = getActivePlayers()
     if not players then return end
     for i = 0, players:size() - 1 do
         local player = players:get(i)
-        if not player or player:isDead() then goto continue end
+        if player and not player:isDead() then
+            local dx = zombie:getX() - player:getX()
+            local dy = zombie:getY() - player:getY()
+            local dist = math.sqrt(dx*dx + dy*dy)
+            local state = getPlayerState(player)
 
-        local dx = zombie:getX() - player:getX()
-        local dy = zombie:getY() - player:getY()
-        local dist = math.sqrt(dx*dx + dy*dy)
-        local state = getPlayerState(player)
+            -- Death Coil: uccidi zombie in mischia → recupera HP
+            if player:HasTrait("trait_DeathCoil") then
+                if dist <= 2.0 then
+                    local bodyDmg = player:getBodyDamage()
+                    local maxHP = player.getMaxHealth and player:getMaxHealth() or 100
+                    if bodyDmg then
+                        local newHP = math.min(bodyDmg:getOverallBodyHealth() + CFG.DEATHCOIL_HEAL_AMOUNT, maxHP)
+                        bodyDmg:setOverallBodyHealth(newHP)
+                        state.lastHealth = newHP
+                    end
+                end
+            end
 
-        -- Death Coil: uccidi zombie in mischia → recupera HP
-        if player:HasTrait("trait_DeathCoil") then
-            if dist <= 2.0 then
-                local bodyDmg = player:getBodyDamage()
-                local maxHP = player.getMaxHealth and player:getMaxHealth() or 100
-                if bodyDmg then
-                    local newHP = math.min(bodyDmg:getOverallBodyHealth() + CFG.DEATHCOIL_HEAL_AMOUNT, maxHP)
-                    bodyDmg:setOverallBodyHealth(newHP)
-                    state.lastHealth = newHP
+            -- Bone Shield: conta le kill
+            if player:HasTrait("trait_BoneShield") then
+                if dist <= 3.0 then
+                    state.bsKillCount = state.bsKillCount + 1
+                    if state.bsKillCount >= CFG.BONE_SHIELD_KILLS and not state.bsActive then
+                        state.bsKillCount = 0
+                        state.bsActive = true
+                        state.bsEndTime = getTimeMs() + CFG.BONE_SHIELD_DURATION
+                    end
                 end
             end
         end
-
-        -- Bone Shield: conta le kill
-        if player:HasTrait("trait_BoneShield") then
-            if dist <= 3.0 then
-                state.bsKillCount = state.bsKillCount + 1
-                if state.bsKillCount >= CFG.BONE_SHIELD_KILLS and not state.bsActive then
-                    state.bsKillCount = 0
-                    state.bsActive = true
-                    state.bsEndTime = getTimeMs() + CFG.BONE_SHIELD_DURATION
-                end
-            end
-        end
-
-        ::continue::
     end
 end
 
