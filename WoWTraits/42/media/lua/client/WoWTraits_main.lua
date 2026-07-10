@@ -145,11 +145,18 @@ end
 
 local function applyTemporaryZombieSpeed(zombie, speed, durationMs, now)
     local existing = ZombieSpeedEffects[zombie]
-    local originalSpeed = (existing and existing.originalSpeed) or CFG.ZOMBIE_DEFAULT_WALK_SPEED
-    if zombie:getStats() then
-        zombie:getStats():setWalkSpeed(speed)
+    local stats = zombie:getStats()
+    local originalSpeed = existing and existing.originalSpeed
+    if not originalSpeed and stats then
+        originalSpeed = stats.getWalkSpeed and stats:getWalkSpeed() or CFG.ZOMBIE_DEFAULT_WALK_SPEED
     end
-    ZombieSpeedEffects[zombie] = { originalSpeed = originalSpeed, expireTime = now + durationMs }
+    if stats then
+        stats:setWalkSpeed(speed)
+    end
+    ZombieSpeedEffects[zombie] = {
+        originalSpeed = originalSpeed or CFG.ZOMBIE_DEFAULT_WALK_SPEED,
+        expireTime = now + durationMs,
+    }
 end
 
 -- =============================================================================
@@ -333,7 +340,7 @@ local function WoWTraits_OnPlayerUpdate(player)
     end
     state.lastHealth = curHP
 
-    local hpPct = curHP / maxHP
+    local hpPct = maxHP > 0 and curHP / maxHP or 0
 
     -- -------------------------------------------------------------------------
     -- BERSERKER: sotto 30% HP → velocità e attacco aumentano
