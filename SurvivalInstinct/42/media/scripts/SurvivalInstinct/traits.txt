@@ -1,0 +1,43 @@
+module SurvivalInstinct
+{
+    /* =====================================================================
+       SURVIVAL INSTINCT - Build 42
+
+       NOTA: la definizione DEVE referenziare il CharacterTrait registrato
+       in media/registries.lua (campo "CharacterTrait = ...").
+       Il namespace "survivalinstinct" e' il nome di questo module in
+       minuscolo, come vanilla ("module Base" -> "base:").
+
+       Convenzione costi (come vanilla character_traits.txt):
+       Cost positivo = il tratto costa punti (tratto positivo).
+
+       XPBoosts fa DUE cose insieme:
+         1. livello iniziale nella skill (una barretta verde alla creazione)
+         2. rate di guadagno XP permanente (boost 0 -> 1 = da meta' rate a
+            tre quarti; boost 2 = rate pieno; boost 3 = rate maggiorato)
+       E' quindi un bonus incondizionato, attivo anche senza pericolo.
+       Tenuto volutamente basso (2 skill) perche' il cuore del tratto e' il
+       moltiplicatore dinamico in SurvivalInstinct.lua, non questo.
+       Costo allineato al vanilla: base:brawler costa 6 e da' 2 boost e basta,
+       qui i 2 boost costano lo stesso e il meccanismo dinamico e' in piu'.
+
+       Nessun MutuallyExclusiveTraits di proposito:
+         - base:desensitized NON va escluso, altrimenti la professione
+           base:veteran (che lo concede via GrantedTraits) non potrebbe mai
+           prendere questo tratto. Il canale "minaccia" lo copre comunque.
+         - base:cowardly non serve escluderlo: senza zombie vicini il bonus
+           e' zero, quindi panicare al sicuro non da' alcun vantaggio.
+       ===================================================================== */
+
+    character_trait_definition survivalinstinct:trait_survivalinstinct
+    {
+        IsProfessionTrait = false,
+        DisabledInMultiplayer = false,
+        CharacterTrait = survivalinstinct:trait_survivalinstinct,
+        Cost = 6,
+        UIName = UI_trait_SurvivalInstinct,
+        UIDescription = UI_trait_SurvivalInstinctDesc,
+        Texture = media/ui/Traits/trait_survivalinstinct.png,
+        XPBoosts = Blunt=1;SmallBlade=1,
+    }
+}

@@ -1,0 +1,9 @@
+name=Survival Instinct
+id=SurvivalInstinct
+author=Danielao
+poster=poster.png
+icon=icon.png
+modversion=1.2.0
+versionMin=42.20.0
+url=https://github.com/DanieleMarino70/ProjectZomboidMods
+description=Adds the "Survival Instinct" positive trait (6 points). <LINE> With zombies closing in you learn to fight faster: the XP multiplier for melee skills scales with the real danger around you, and panic or stress push it higher still. <LINE> Safe and alone it gives you nothing at all: no zombies, no bonus. <LINE> Works with Desensitized and the Veteran occupation too. <LINE> Build 42 only. English and Italian.
